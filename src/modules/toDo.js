@@ -1,3 +1,6 @@
+// toDo.js
+import { v4 as uuidv4 } from "uuid";
+
 export default class ToDo {
   constructor(
     title,
@@ -6,83 +9,59 @@ export default class ToDo {
     priority = "normal",
     notes = [],
     completed = false,
-    id = Date.now().toString()
+    id = null
   ) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate ? new Date(dueDate) : null;
     this.priority = priority;
+    this.notes = [...notes]; // array of strings
     this.completed = completed;
-    this.id = id;
-    this.notes = [...notes];
+    this.id = id || uuidv4(); // unique ID
   }
-  getTitle() {
-    return this.title;
+
+  // ===== Todo editing =====
+  editTodo({ title, description, dueDate, priority, completed, notes }) {
+    if (title !== undefined) this.title = title;
+    if (description !== undefined) this.description = description;
+    if (dueDate !== undefined)
+      this.dueDate = dueDate ? new Date(dueDate) : null;
+    if (priority !== undefined) this.priority = priority;
+    if (completed !== undefined) this.completed = completed;
+    if (notes !== undefined) this.notes = [...notes];
   }
-  setTitle(newTitle) {
-    if (typeof newTitle === "string" && newTitle.trim() !== "") {
-      this.title = newTitle;
-    } else {
-      console.warn("Invalid title. Keeping previous value.");
-    }
-  }
-  getDescription() {
-    return this.description;
-  }
-  setDescription(newDescription) {
-    this.description = newDescription;
-  }
-  getDueDate() {
-    return this.dueDate;
-  }
-  setDueDate(newDueDate) {
-    if (newDueDate) {
-      const date = new Date(newDueDate);
-      if (!isNaN(date)) this.dueDate = date;
-      else console.warn("Invalid date. Keeping previous value.");
-    } else {
-      this.dueDate = null;
-    }
-  }
-  getPriority() {
-    return this.priority;
-  }
-  setPriority(newPriority) {
-    const allowed = ["low", "normal", "high"];
-    if (allowed.includes(newPriority)) {
-      this.priority = newPriority;
-    } else {
-      console.warn(
-        `Invalid priority: "${newPriority}". Keeping previous value: "${this.priority}"`
-      );
-    }
-  }
+
+  // ===== Notes management =====
   getNotes() {
-    return this.notes;
+    return [...this.notes];
   }
+
   addNote(note) {
-    this.notes.push(note);
+    if (typeof note === "string" && note.trim() !== "") {
+      this.notes.push(note);
+    } else {
+      console.warn("Note must be a non-empty string");
+    }
   }
+
   removeNote(index) {
     if (index >= 0 && index < this.notes.length) {
       this.notes.splice(index, 1);
     } else {
-      console.warn(`Invalid note index: ${index}. No note removed.`);
+      console.warn("Invalid note index");
     }
   }
-  // --- State methods ---
+
+  // ===== Completion state =====
   markComplete() {
     this.completed = true;
   }
+
   markIncomplete() {
     this.completed = false;
   }
-  // bulk edit
-  editTodo({ title, description, dueDate, priority, notes }) {
-    if (title !== undefined) this.setTitle(title);
-    if (description !== undefined) this.setDescription(description);
-    if (dueDate !== undefined) this.setDueDate(dueDate);
-    if (priority !== undefined) this.setPriority(priority);
-    if (notes !== undefined) this.notes = [...notes];
+
+  toggleCompleted() {
+    this.completed = !this.completed;
   }
 }
