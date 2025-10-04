@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo App</title>
+</head>
+<body>
+  <h1>Todo App</h1>
+
+  <form id="todo-form">
+    <input type="text" id="title" placeholder="Title" required />
+    <input type="text" id="description" placeholder="Description" />
+    <input type="number" id="date" placeholder="Date" min="1" max="31" />
+    <input type="number" id="month" placeholder="Month" min="1" max="12" />
+    <input type="number" id="year" placeholder="Year" />
+    <select id="priority">
+      <option value="low">Low</option>
+      <option value="normal">Normal</option>
+      <option value="high">High</option>
+    </select>
+    <button type="submit">Add Todo</button>
+  </form>
+
+  <!-- 👇 This is where todos should appear -->
+  <!-- index.html -->
+  <ul id="todo-list"></ul>
+
+</body>
+</html>

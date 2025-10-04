@@ -1,0 +1,11 @@
+#todo-list {
+  list-style: none; /* removes bullet */
+  padding: 0;
+}
+
+#todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between text and buttons */
+  margin-bottom: 5px;
+}

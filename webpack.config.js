@@ -1,10 +1,31 @@
-const path = require("path");
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
-module.exports = {
-  entry: "./src/index.js", // your main file
+// Emulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default {
+  entry: "./src/index.js",
   output: {
-    filename: "bundle.js", // output file
+    filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
-  mode: "development", // use 'production' when ready to deploy
+
+  mode: "development",
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+    },
+    hot: true, // enable HMR
+    open: true, // auto-open browser
+    port: 8080, // optional, default 8080
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
 };
